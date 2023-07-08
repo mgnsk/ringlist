@@ -1,36 +1,40 @@
 package ringlist
 
-// ElementList is a built in list type that uses the Element type as its element.
+// List is a linked list that uses the *Element[V any] type as its element.
+//
 // The zero value is a ready to use empty list.
-type ElementList[V any] struct {
-	List[Element[V], *Element[V]]
+type List[V any] struct {
+	ListOf[Element[V], *Element[V]]
 }
 
-// ListElement is the constraint for a generic list element.
-type ListElement[E any] interface {
+// Linkable is the constraint for a generic list element.
+type Linkable[E any] interface {
 	Link(E)
 	Unlink()
 	Next() E
 	Prev() E
 }
 
-// List is a generic circular doubly linked list.
+// ListOf is a generic circular doubly linked list.
+// The list element must be a pointer that implements
+// the Linkable[E any] interface.
+//
 // The zero value is a ready to use empty list.
-type List[T any, E interface {
+type ListOf[T any, E interface {
 	*T
-	ListElement[E]
+	Linkable[E]
 }] struct {
 	tail E
 	len  int
 }
 
 // Len returns the number of elements in the list.
-func (l *List[T, E]) Len() int {
+func (l *ListOf[T, E]) Len() int {
 	return l.len
 }
 
 // Front returns the first element of the list or nil.
-func (l *List[T, E]) Front() E {
+func (l *ListOf[T, E]) Front() E {
 	if l.len == 0 {
 		return nil
 	}
@@ -38,12 +42,12 @@ func (l *List[T, E]) Front() E {
 }
 
 // Back returns the last element of the list or nil.
-func (l *List[T, E]) Back() E {
+func (l *ListOf[T, E]) Back() E {
 	return l.tail
 }
 
 // PushBack inserts a new element at the back of list l.
-func (l *List[T, E]) PushBack(e E) {
+func (l *ListOf[T, E]) PushBack(e E) {
 	if l.tail != nil {
 		l.tail.Link(e)
 	}
@@ -52,7 +56,7 @@ func (l *List[T, E]) PushBack(e E) {
 }
 
 // PushFront inserts a new element at the front of list l.
-func (l *List[T, E]) PushFront(e E) {
+func (l *ListOf[T, E]) PushFront(e E) {
 	if l.tail != nil {
 		l.tail.Link(e)
 	} else {
@@ -64,7 +68,7 @@ func (l *List[T, E]) PushFront(e E) {
 // Do calls function f on each element of the list, in forward order.
 // If f returns false, Do stops the iteration.
 // f must not change l.
-func (l *List[T, E]) Do(f func(e E) bool) {
+func (l *ListOf[T, E]) Do(f func(e E) bool) {
 	e := l.Front()
 	if e == nil {
 		return
@@ -82,7 +86,7 @@ func (l *List[T, E]) Do(f func(e E) bool) {
 }
 
 // MoveAfter moves an element to its new position after mark.
-func (l *List[T, E]) MoveAfter(e, mark E) {
+func (l *ListOf[T, E]) MoveAfter(e, mark E) {
 	l.Remove(e)
 
 	mark.Link(e)
@@ -94,7 +98,7 @@ func (l *List[T, E]) MoveAfter(e, mark E) {
 }
 
 // MoveBefore moves an element to its new position before mark.
-func (l *List[T, E]) MoveBefore(e, mark E) {
+func (l *ListOf[T, E]) MoveBefore(e, mark E) {
 	l.Remove(e)
 
 	mark.Prev().Link(e)
@@ -103,18 +107,18 @@ func (l *List[T, E]) MoveBefore(e, mark E) {
 }
 
 // MoveToFront moves the element to the front of list l.
-func (l *List[T, E]) MoveToFront(e E) {
+func (l *ListOf[T, E]) MoveToFront(e E) {
 	l.MoveBefore(e, l.Front())
 }
 
 // MoveToBack moves the element to the back of list l.
-func (l *List[T, E]) MoveToBack(e E) {
+func (l *ListOf[T, E]) MoveToBack(e E) {
 	l.MoveAfter(e, l.Back())
 }
 
 // Move moves element e forward or backwards by at most delta positions
 // or until the element becomes the front or back element in the list.
-func (l *List[T, E]) Move(e E, delta int) {
+func (l *ListOf[T, E]) Move(e E, delta int) {
 	if l.tail == nil {
 		panic("ringlist: invalid element")
 	}
@@ -150,7 +154,7 @@ func (l *List[T, E]) Move(e E, delta int) {
 }
 
 // Remove an element from the list.
-func (l *List[T, E]) Remove(e E) {
+func (l *ListOf[T, E]) Remove(e E) {
 	if e == l.tail {
 		if l.len == 1 {
 			l.tail = nil

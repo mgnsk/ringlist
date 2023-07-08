@@ -8,7 +8,7 @@ import (
 )
 
 func TestPushFront(t *testing.T) {
-	var list ringlist.ElementList[int]
+	var list ringlist.List[int]
 
 	g := NewWithT(t)
 
@@ -22,7 +22,7 @@ func TestPushFront(t *testing.T) {
 }
 
 func TestPushBack(t *testing.T) {
-	var list ringlist.ElementList[int]
+	var list ringlist.List[int]
 
 	g := NewWithT(t)
 
@@ -37,7 +37,7 @@ func TestPushBack(t *testing.T) {
 
 func TestMoveToFront(t *testing.T) {
 	t.Run("moving the back element", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -51,7 +51,7 @@ func TestMoveToFront(t *testing.T) {
 	})
 
 	t.Run("moving the middle element", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -68,7 +68,7 @@ func TestMoveToFront(t *testing.T) {
 
 func TestMoveToBack(t *testing.T) {
 	t.Run("moving the front element", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -82,7 +82,7 @@ func TestMoveToBack(t *testing.T) {
 	})
 
 	t.Run("moving the middle element", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -99,7 +99,7 @@ func TestMoveToBack(t *testing.T) {
 
 func TestMoveForward(t *testing.T) {
 	t.Run("overflow", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -113,7 +113,7 @@ func TestMoveForward(t *testing.T) {
 	})
 
 	t.Run("not overflow", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -131,7 +131,7 @@ func TestMoveForward(t *testing.T) {
 
 func TestMoveBackwards(t *testing.T) {
 	t.Run("overflow", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -145,7 +145,7 @@ func TestMoveBackwards(t *testing.T) {
 	})
 
 	t.Run("not overflow", func(t *testing.T) {
-		var list ringlist.ElementList[string]
+		var list ringlist.List[string]
 
 		g := NewWithT(t)
 
@@ -162,7 +162,7 @@ func TestMoveBackwards(t *testing.T) {
 }
 
 func TestDo(t *testing.T) {
-	var list ringlist.ElementList[string]
+	var list ringlist.List[string]
 
 	g := NewWithT(t)
 
@@ -182,7 +182,7 @@ func TestDo(t *testing.T) {
 	g.Expect(elems).To(Equal([]string{"one", "two", "three"}))
 }
 
-func expectValidRing[T any](g *WithT, list *ringlist.ElementList[T]) {
+func expectValidRing[T any](g *WithT, list *ringlist.List[T]) {
 	g.Expect(list.Len()).To(BeNumerically(">", 0))
 	g.Expect(list.Front()).To(Equal(list.Back().Next()))
 	g.Expect(list.Back()).To(Equal(list.Front().Prev()))
