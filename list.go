@@ -1,4 +1,4 @@
-package ringlist
+package list
 
 // List is a linked list that uses the *Element[V any] type as its element.
 //
@@ -120,11 +120,11 @@ func (l *ListOf[T, E]) MoveToBack(e E) {
 // or until the element becomes the front or back element in the list.
 func (l *ListOf[T, E]) Move(e E, delta int) {
 	if l.tail == nil {
-		panic("ringlist: invalid element")
+		panic("list: invalid element")
 	}
 
 	if l.len == 1 && e != l.tail {
-		panic("ringlist: invalid element")
+		panic("list: invalid element")
 	}
 
 	mark := e

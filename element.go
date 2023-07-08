@@ -1,4 +1,4 @@
-package ringlist
+package list
 
 // Element is a list element.
 type Element[V any] struct {

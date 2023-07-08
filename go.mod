@@ -1,4 +1,4 @@
-module github.com/mgnsk/ringlist
+module github.com/mgnsk/list
 
 go 1.20
 

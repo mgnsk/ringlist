@@ -1,4 +1,4 @@
 /*
-Package ringlist implements a circular doubly linked list.
+Package list implements a circular doubly linked list.
 */
-package ringlist
+package list
