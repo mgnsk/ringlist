@@ -87,6 +87,10 @@ func (l *ListOf[T, E]) Do(f func(e E) bool) {
 
 // MoveAfter moves an element to its new position after mark.
 func (l *ListOf[T, E]) MoveAfter(e, mark E) {
+	if e == mark {
+		return
+	}
+
 	l.Remove(e)
 
 	mark.Link(e)
@@ -99,6 +103,10 @@ func (l *ListOf[T, E]) MoveAfter(e, mark E) {
 
 // MoveBefore moves an element to its new position before mark.
 func (l *ListOf[T, E]) MoveBefore(e, mark E) {
+	if e == mark {
+		return
+	}
+
 	l.Remove(e)
 
 	mark.Prev().Link(e)

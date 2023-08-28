@@ -97,6 +97,62 @@ func TestMoveToBack(t *testing.T) {
 	})
 }
 
+func TestMoveBefore(t *testing.T) {
+	t.Run("before itself", func(t *testing.T) {
+		var l list.List[string]
+
+		g := NewWithT(t)
+
+		l.PushBack(list.NewElement("one"))
+		l.PushBack(list.NewElement("two"))
+		l.PushBack(list.NewElement("three"))
+		expectValidRing(g, &l)
+
+		one := l.Front()
+		two := l.Front().Next()
+		three := l.Front().Next().Next()
+
+		g.Expect(one.Value).To(Equal("one"))
+		g.Expect(two.Value).To(Equal("two"))
+		g.Expect(three.Value).To(Equal("three"))
+
+		l.MoveToFront(one)
+		l.MoveToFront(two)
+		l.MoveToFront(three)
+		g.Expect(l.Len()).To(Equal(3))
+
+		expectHasExactElements(g, &l, "three", "two", "one")
+	})
+}
+
+func TestMoveAfter(t *testing.T) {
+	t.Run("after itself", func(t *testing.T) {
+		var l list.List[string]
+
+		g := NewWithT(t)
+
+		l.PushBack(list.NewElement("one"))
+		l.PushBack(list.NewElement("two"))
+		l.PushBack(list.NewElement("three"))
+		expectValidRing(g, &l)
+
+		one := l.Front()
+		two := l.Front().Next()
+		three := l.Front().Next().Next()
+
+		g.Expect(one.Value).To(Equal("one"))
+		g.Expect(two.Value).To(Equal("two"))
+		g.Expect(three.Value).To(Equal("three"))
+
+		l.MoveToBack(three)
+		l.MoveToBack(two)
+		l.MoveToBack(one)
+		g.Expect(l.Len()).To(Equal(3))
+
+		expectHasExactElements(g, &l, "three", "two", "one")
+	})
+}
+
 func TestMoveForward(t *testing.T) {
 	t.Run("overflow", func(t *testing.T) {
 		var l list.List[string]
@@ -180,6 +236,18 @@ func TestDo(t *testing.T) {
 	})
 
 	g.Expect(elems).To(Equal([]string{"one", "two", "three"}))
+}
+
+func expectHasExactElements[T any](g *WithT, l *list.List[T], elements ...any) {
+	var elems []T
+
+	l.Do(func(e *list.Element[T]) bool {
+		elems = append(elems, e.Value)
+
+		return true
+	})
+
+	g.Expect(elems).To(HaveExactElements(elements...))
 }
 
 func expectValidRing[T any](g *WithT, l *list.List[T]) {
