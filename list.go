@@ -1,40 +1,20 @@
 package list
 
-// List is a linked list that uses the *Element[V any] type as its element.
+// List is a circular doubly linked list.
 //
 // The zero value is a ready to use empty list.
 type List[V any] struct {
-	ListOf[Element[V], *Element[V]]
-}
-
-// Linkable is the constraint for a generic list element.
-type Linkable[E any] interface {
-	Link(E)
-	Unlink()
-	Next() E
-	Prev() E
-}
-
-// ListOf is a generic circular doubly linked list.
-// The list element must be a pointer that implements
-// the Linkable[E any] interface.
-//
-// The zero value is a ready to use empty list.
-type ListOf[T any, E interface {
-	*T
-	Linkable[E]
-}] struct {
-	tail E
+	tail *Element[V]
 	len  int
 }
 
 // Len returns the number of elements in the list.
-func (l *ListOf[T, E]) Len() int {
+func (l *List[V]) Len() int {
 	return l.len
 }
 
 // Front returns the first element of the list or nil.
-func (l *ListOf[T, E]) Front() E {
+func (l *List[V]) Front() *Element[V] {
 	if l.len == 0 {
 		return nil
 	}
@@ -42,12 +22,12 @@ func (l *ListOf[T, E]) Front() E {
 }
 
 // Back returns the last element of the list or nil.
-func (l *ListOf[T, E]) Back() E {
+func (l *List[V]) Back() *Element[V] {
 	return l.tail
 }
 
 // PushBack inserts a new element at the back of list l.
-func (l *ListOf[T, E]) PushBack(e E) {
+func (l *List[V]) PushBack(e *Element[V]) {
 	if l.tail != nil {
 		l.tail.Link(e)
 	}
@@ -56,7 +36,7 @@ func (l *ListOf[T, E]) PushBack(e E) {
 }
 
 // PushFront inserts a new element at the front of list l.
-func (l *ListOf[T, E]) PushFront(e E) {
+func (l *List[V]) PushFront(e *Element[V]) {
 	if l.tail != nil {
 		l.tail.Link(e)
 	} else {
@@ -68,7 +48,7 @@ func (l *ListOf[T, E]) PushFront(e E) {
 // Do calls function f on each element of the list, in forward order.
 // If f returns false, Do stops the iteration.
 // f must not change l.
-func (l *ListOf[T, E]) Do(f func(e E) bool) {
+func (l *List[V]) Do(f func(e *Element[V]) bool) {
 	e := l.Front()
 	if e == nil {
 		return
@@ -86,7 +66,7 @@ func (l *ListOf[T, E]) Do(f func(e E) bool) {
 }
 
 // MoveAfter moves an element to its new position after mark.
-func (l *ListOf[T, E]) MoveAfter(e, mark E) {
+func (l *List[V]) MoveAfter(e, mark *Element[V]) {
 	if e == mark {
 		return
 	}
@@ -102,7 +82,7 @@ func (l *ListOf[T, E]) MoveAfter(e, mark E) {
 }
 
 // MoveBefore moves an element to its new position before mark.
-func (l *ListOf[T, E]) MoveBefore(e, mark E) {
+func (l *List[V]) MoveBefore(e, mark *Element[V]) {
 	if e == mark {
 		return
 	}
@@ -115,18 +95,18 @@ func (l *ListOf[T, E]) MoveBefore(e, mark E) {
 }
 
 // MoveToFront moves the element to the front of list l.
-func (l *ListOf[T, E]) MoveToFront(e E) {
+func (l *List[V]) MoveToFront(e *Element[V]) {
 	l.MoveBefore(e, l.Front())
 }
 
 // MoveToBack moves the element to the back of list l.
-func (l *ListOf[T, E]) MoveToBack(e E) {
+func (l *List[V]) MoveToBack(e *Element[V]) {
 	l.MoveAfter(e, l.Back())
 }
 
 // Move moves element e forward or backwards by at most delta positions
 // or until the element becomes the front or back element in the list.
-func (l *ListOf[T, E]) Move(e E, delta int) {
+func (l *List[V]) Move(e *Element[V], delta int) {
 	if l.tail == nil {
 		panic("list: invalid element")
 	}
@@ -162,7 +142,7 @@ func (l *ListOf[T, E]) Move(e E, delta int) {
 }
 
 // Remove an element from the list.
-func (l *ListOf[T, E]) Remove(e E) {
+func (l *List[V]) Remove(e *Element[V]) {
 	if e == l.tail {
 		if l.len == 1 {
 			l.tail = nil
