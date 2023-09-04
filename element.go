@@ -2,8 +2,8 @@ package list
 
 // Element is a list element.
 type Element[V any] struct {
-	Value      V
 	next, prev *Element[V]
+	Value      V
 }
 
 // NewElement creates a list element.
