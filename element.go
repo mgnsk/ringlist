@@ -26,8 +26,8 @@ func (e *Element[V]) Prev() *Element[V] {
 	return e.prev
 }
 
-// Link inserts an element after this element.
-func (e *Element[V]) Link(s *Element[V]) {
+// link inserts an element after this element.
+func (e *Element[V]) link(s *Element[V]) {
 	n := e.next
 	e.next = s
 	s.prev = e
@@ -35,8 +35,8 @@ func (e *Element[V]) Link(s *Element[V]) {
 	s.next = n
 }
 
-// Unlink unlinks this element.
-func (e *Element[V]) Unlink() {
+// unlink unlinks this element.
+func (e *Element[V]) unlink() {
 	e.prev.next = e.next
 	e.next.prev = e.prev
 	e.next = e

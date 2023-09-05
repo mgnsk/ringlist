@@ -29,7 +29,7 @@ func (l *List[V]) Back() *Element[V] {
 // PushBack inserts a new element at the back of list l.
 func (l *List[V]) PushBack(e *Element[V]) {
 	if l.tail != nil {
-		l.tail.Link(e)
+		l.tail.link(e)
 	}
 	l.tail = e
 	l.len++
@@ -38,7 +38,7 @@ func (l *List[V]) PushBack(e *Element[V]) {
 // PushFront inserts a new element at the front of list l.
 func (l *List[V]) PushFront(e *Element[V]) {
 	if l.tail != nil {
-		l.tail.Link(e)
+		l.tail.link(e)
 	} else {
 		l.tail = e
 	}
@@ -73,7 +73,7 @@ func (l *List[V]) MoveAfter(e, mark *Element[V]) {
 
 	l.Remove(e)
 
-	mark.Link(e)
+	mark.link(e)
 	l.len++
 
 	if mark == l.tail {
@@ -89,7 +89,7 @@ func (l *List[V]) MoveBefore(e, mark *Element[V]) {
 
 	l.Remove(e)
 
-	mark.Prev().Link(e)
+	mark.Prev().link(e)
 
 	l.len++
 }
@@ -150,6 +150,6 @@ func (l *List[V]) Remove(e *Element[V]) {
 			l.tail = e.Prev()
 		}
 	}
-	e.Unlink()
+	e.unlink()
 	l.len--
 }
