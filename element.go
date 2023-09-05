@@ -16,12 +16,12 @@ func NewElement[V any](v V) *Element[V] {
 	return e
 }
 
-// Next returns the next element or nil.
+// Next returns the next element or itself.
 func (e *Element[V]) Next() *Element[V] {
 	return e.next
 }
 
-// Prev returns the previous element or nil.
+// Prev returns the previous element or itself.
 func (e *Element[V]) Prev() *Element[V] {
 	return e.prev
 }
