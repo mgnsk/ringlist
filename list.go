@@ -1,4 +1,4 @@
-package list
+package ringlist
 
 // List is a circular doubly linked list.
 //
