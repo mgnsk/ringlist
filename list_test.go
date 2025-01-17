@@ -10,10 +10,10 @@ import (
 func TestPushFront(t *testing.T) {
 	var l ringlist.List[int]
 
-	l.PushFront(ringlist.NewElement(0))
+	l.PushFront(0)
 	assertEqual(t, l.Len(), 1)
 
-	l.PushFront(ringlist.NewElement(1))
+	l.PushFront(1)
 	assertEqual(t, l.Len(), 2)
 
 	expectValidRing(t, &l)
@@ -22,10 +22,10 @@ func TestPushFront(t *testing.T) {
 func TestPushBack(t *testing.T) {
 	var l ringlist.List[int]
 
-	l.PushFront(ringlist.NewElement(0))
+	l.PushFront(0)
 	assertEqual(t, l.Len(), 1)
 
-	l.PushFront(ringlist.NewElement(1))
+	l.PushFront(1)
 	assertEqual(t, l.Len(), 2)
 
 	expectValidRing(t, &l)
@@ -35,8 +35,8 @@ func TestMoveToFront(t *testing.T) {
 	t.Run("moving the back element", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
+		l.PushBack("one")
+		l.PushBack("two")
 		l.MoveToFront(l.Back())
 
 		expectValidRing(t, &l)
@@ -47,9 +47,9 @@ func TestMoveToFront(t *testing.T) {
 	t.Run("moving the middle element", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
-		l.PushBack(ringlist.NewElement("three"))
+		l.PushBack("one")
+		l.PushBack("two")
+		l.PushBack("three")
 		l.MoveToFront(l.Front().Next())
 
 		expectValidRing(t, &l)
@@ -62,8 +62,8 @@ func TestMoveToBack(t *testing.T) {
 	t.Run("moving the front element", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
+		l.PushBack("one")
+		l.PushBack("two")
 		l.MoveToBack(l.Front())
 
 		expectValidRing(t, &l)
@@ -74,9 +74,9 @@ func TestMoveToBack(t *testing.T) {
 	t.Run("moving the middle element", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
-		l.PushBack(ringlist.NewElement("three"))
+		l.PushBack("one")
+		l.PushBack("two")
+		l.PushBack("three")
 		l.MoveToBack(l.Front().Next())
 
 		expectValidRing(t, &l)
@@ -89,9 +89,9 @@ func TestMoveBefore(t *testing.T) {
 	t.Run("before itself", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
-		l.PushBack(ringlist.NewElement("three"))
+		l.PushBack("one")
+		l.PushBack("two")
+		l.PushBack("three")
 		expectValidRing(t, &l)
 
 		one := l.Front()
@@ -115,9 +115,9 @@ func TestMoveAfter(t *testing.T) {
 	t.Run("after itself", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
-		l.PushBack(ringlist.NewElement("three"))
+		l.PushBack("one")
+		l.PushBack("two")
+		l.PushBack("three")
 		expectValidRing(t, &l)
 
 		one := l.Front()
@@ -141,8 +141,8 @@ func TestMoveForward(t *testing.T) {
 	t.Run("overflow", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
+		l.PushBack("one")
+		l.PushBack("two")
 		l.Move(l.Front(), 3)
 
 		expectValidRing(t, &l)
@@ -153,9 +153,9 @@ func TestMoveForward(t *testing.T) {
 	t.Run("not overflow", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
-		l.PushBack(ringlist.NewElement("three"))
+		l.PushBack("one")
+		l.PushBack("two")
+		l.PushBack("three")
 		l.Move(l.Front(), 1)
 
 		expectValidRing(t, &l)
@@ -169,8 +169,8 @@ func TestMoveBackwards(t *testing.T) {
 	t.Run("overflow", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
+		l.PushBack("one")
+		l.PushBack("two")
 		l.Move(l.Back(), -3)
 
 		expectValidRing(t, &l)
@@ -181,9 +181,9 @@ func TestMoveBackwards(t *testing.T) {
 	t.Run("not overflow", func(t *testing.T) {
 		var l ringlist.List[string]
 
-		l.PushBack(ringlist.NewElement("one"))
-		l.PushBack(ringlist.NewElement("two"))
-		l.PushBack(ringlist.NewElement("three"))
+		l.PushBack("one")
+		l.PushBack("two")
+		l.PushBack("three")
 		l.Move(l.Back(), -1)
 
 		expectValidRing(t, &l)
@@ -196,9 +196,9 @@ func TestMoveBackwards(t *testing.T) {
 func TestDo(t *testing.T) {
 	var l ringlist.List[string]
 
-	l.PushBack(ringlist.NewElement("one"))
-	l.PushBack(ringlist.NewElement("two"))
-	l.PushBack(ringlist.NewElement("three"))
+	l.PushBack("one")
+	l.PushBack("two")
+	l.PushBack("three")
 
 	assertEqual(t, l.Len(), 3)
 	expectValidRing(t, &l)

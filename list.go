@@ -26,8 +26,15 @@ func (l *List[V]) Back() *Element[V] {
 	return l.tail
 }
 
-// PushBack inserts a new element at the back of list l.
-func (l *List[V]) PushBack(e *Element[V]) {
+// PushBack inserts a value at the back of list l and returns the new element.
+func (l *List[V]) PushBack(value V) *Element[V] {
+	e := NewElement(value)
+	l.PushBackElem(e)
+	return e
+}
+
+// PushBackElem inserts a new element at the back of list l.
+func (l *List[V]) PushBackElem(e *Element[V]) {
 	if l.tail != nil {
 		l.tail.link(e)
 	}
@@ -35,8 +42,15 @@ func (l *List[V]) PushBack(e *Element[V]) {
 	l.len++
 }
 
-// PushFront inserts a new element at the front of list l.
-func (l *List[V]) PushFront(e *Element[V]) {
+// PushFront inserts a value at the front of list l and returns the new element.
+func (l *List[V]) PushFront(value V) *Element[V] {
+	e := NewElement(value)
+	l.PushFrontElem(e)
+	return e
+}
+
+// PushFrontElem inserts a new element at the front of list l.
+func (l *List[V]) PushFrontElem(e *Element[V]) {
 	if l.tail != nil {
 		l.tail.link(e)
 	} else {
